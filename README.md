@@ -11,6 +11,14 @@ A basic bison boilerplate.
 - bison
 - [make](https://www.gnu.org/software/make/)
 
+### Try Me!
+
+```
+    $ git clone https://github.com/danielzy95/bison-boilerplate.git
+    $ cd bison-boilerplate
+    $ make run
+```
+
 ### Build
 
 ```
