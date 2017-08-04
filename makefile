@@ -12,10 +12,14 @@ TARGET = bin/parser # Modify this to change the name of the program
 
 # Don't modify these unless you know what you're doing
 
-TOKENS = src/bison/tokens.h
+TOKENS = $(FBDST)/tokens.h
 
-FLEX_TARGET  = src/flex/lexer.c
-BISON_TARGET = src/bison/parser.c
+FBDST = dst
+
+GENERATED_DIRS = bin obj $(FBDST)
+
+FLEX_TARGET  = $(FBDST)/lexer.c
+BISON_TARGET = $(FBDST)/parser.c
 
 OBJ_FILES = $(OBJ_CPP_TARGET) $(OBJ_BISON_TARGET) $(OBJ_FLEX_TARGET)
 
@@ -26,6 +30,11 @@ OBJ_BISON_TARGET = obj/parser.o
 #########################################
 
 .PHONY: clean
+
+build: dirs $(TARGET)
+
+dirs:
+	mkdir -p $(GENERATED_DIRS)
 
 $(TARGET): $(OBJ_FILES)
 	g++ -w -g -o $@ $^
@@ -51,5 +60,4 @@ run: $(TARGET)
 clean:
 	rm -f bin/*
 	rm -f obj/*
-	rm -f src/bison/*
-	rm -f src/flex/*
+	rm -f $(FBDST)/*

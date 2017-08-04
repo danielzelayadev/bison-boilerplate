@@ -2,7 +2,7 @@
 
 %{
     #include <stdio.h>
-    #include "../bison/tokens.h"
+    #include "tokens.h"
 %}
 
 %%
