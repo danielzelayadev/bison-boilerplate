@@ -54,7 +54,7 @@ $(OBJ_FLEX_TARGET): $(FLEX_TARGET)
 $(OBJ_CPP_TARGET): $(CPP_SRC) $(HEADERS)
 	g++ -w -g -c -o $@ $(CPP_SRC)
 
-run: $(TARGET)
+run: build
 	./$(TARGET)
 
 clean:
