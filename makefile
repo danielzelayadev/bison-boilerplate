@@ -10,6 +10,8 @@ HEADERS = # Add your header files
 
 TARGET = bin/parser # Modify this to change the name of the program
 
+ENTRY = samples/sample.txt # Modify this to change the entry sample
+
 # Don't modify these unless you know what you're doing
 
 TOKENS = $(FBDST)/tokens.h
@@ -55,7 +57,7 @@ $(OBJ_CPP_TARGET): $(CPP_SRC) $(HEADERS)
 	g++ -w -g -c -o $@ $(CPP_SRC)
 
 run: build
-	./$(TARGET)
+	./$(TARGET) $(ENTRY)
 
 clean:
 	rm -f bin/*
