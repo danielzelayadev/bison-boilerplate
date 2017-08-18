@@ -53,8 +53,8 @@ $(OBJ_BISON_TARGET): $(BISON_TARGET)
 $(OBJ_FLEX_TARGET): $(FLEX_TARGET)
 	g++ -w -g -c -o $@ $<
 
-$(OBJ_CPP_TARGET): $(CPP_SRC) $(HEADERS)
-	g++ -w -g -c -o $@ $(CPP_SRC)
+obj/%.o: src/%.cpp $(HEADERS)
+	g++ -w -g -c -o $@ $<
 
 run: build
 	./$(TARGET) $(ENTRY)
