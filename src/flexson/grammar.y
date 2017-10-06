@@ -8,7 +8,7 @@
 	int yylex();
 
 	void yyerror(const char *msg) {
-		printf("[%d:%d] %s\n", yylineno, column, msg);
+		printf("[%d:%d] %s\n", yylineno + 1, column + 1, msg);
 	}
 %}
 
