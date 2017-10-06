@@ -2,44 +2,42 @@
 
 A basic bison boilerplate.
 
+![GNU](https://samskalicky.files.wordpress.com/2014/01/heckert_gnu_white.png)
+
 ## Getting Started
 
 ### Requirements
 
 - [g++](https://gcc.gnu.org/)
+- [make](https://www.gnu.org/software/make/)
 - flex
 - bison
-- [make](https://www.gnu.org/software/make/)
-
-### Try Me!
-
-```
-    $ git clone https://github.com/danielzy95/bison-boilerplate.git
-    $ cd bison-boilerplate
-    $ make run
-```
 
 ### Build
 
 ```
-    $ make
+make # or make build
 ```
 
-### Build & Run
+### Run a Sample
+
+Via shell script:
 
 ```
-    $ make run
+sh run.sh samples/sample.txt
+```
+
+Directly:
+
+```
+./bin/parser samples/sample.txt
 ```
 
 ### Clean
 
 ```
-    $ make clean
+make clean
 ```
-
-## Caveats
-
-Relative includes (`#include "./foo.h"`) in `*.l` and `*.y` files must be relative to the `dst` directory which will be generated when you build the project, otherwise the compiler will throw an error.
 
 ## License
 
