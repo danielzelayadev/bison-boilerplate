@@ -1,65 +1,42 @@
-# Modify these variables to add more files
+CPP_SRC = $(PARSER) $(LEXER) $(shell find . -name "*.cpp" -not -path "./src/flexson/*")
 
-CPP_SRC = src/main.cpp
-FLEX_SRC = src/tokens.l
-BISON_SRC = src/grammar.y
+LEXER = src/flexson/lexer.cpp
+PARSER = src/flexson/parser.cpp
 
-HEADERS = # Add your header files
+TOKENS = src/flexson/tokens.h
 
-#########################################
+REPORT = debug/state.out
 
-TARGET = bin/parser # Modify this to change the name of the program
+FLEX_SRC = src/flexson/tokens.l
 
-ENTRY = samples/sample.txt # Modify this to change the entry sample
+BISON_SRC = src/flexson/grammar.y
 
-# Don't modify these unless you know what you're doing
+OBJ_FILES = $(patsubst ./src/%.cpp, obj/%.o, $(CPP_SRC))
 
-TOKENS = $(FBDST)/tokens.h
+CXXFLAGS=-std=c++11
 
-FBDST = dst
-
-GENERATED_DIRS = bin obj $(FBDST)
-
-FLEX_TARGET  = $(FBDST)/lexer.c
-BISON_TARGET = $(FBDST)/parser.c
-
-OBJ_FILES = $(OBJ_CPP_TARGET) $(OBJ_BISON_TARGET) $(OBJ_FLEX_TARGET)
-
-OBJ_CPP_TARGET = ${CPP_SRC:src/%.cpp=obj/%.o}
-OBJ_FLEX_TARGET = obj/lexer.o
-OBJ_BISON_TARGET = obj/parser.o
-
-#########################################
+TARGET = bin/parser
 
 .PHONY: clean
 
-build: dirs $(TARGET)
+build: $(TARGET)
 
-dirs:
-	mkdir -p $(GENERATED_DIRS)
+$(LEXER): $(FLEX_SRC)
+	flex -o $@ $<
+
+$(PARSER): $(BISON_SRC)
+	mkdir -p debug
+	bison --defines=$(TOKENS) -v --report-file=$(REPORT) -o $@ $<
+
+obj/%.o: src/%.cpp
+	mkdir -p $(@D)
+	g++ -std=c++11 -w -g -c -o $@ $<
 
 $(TARGET): $(OBJ_FILES)
-	g++ -w -g -o $@ $^
-
-$(FLEX_TARGET): $(FLEX_SRC)
-	flex -o $@ $^
-
-$(BISON_TARGET): $(BISON_SRC)
-	bison --defines=$(TOKENS) -o $@ $^
-
-$(OBJ_BISON_TARGET): $(BISON_TARGET)
-	g++ -w -g -c -o $@ $<
-
-$(OBJ_FLEX_TARGET): $(FLEX_TARGET)
-	g++ -w -g -c -o $@ $<
-
-obj/%.o: src/%.cpp $(HEADERS)
-	g++ -w -g -c -o $@ $<
-
-run: build
-	./$(TARGET) $(ENTRY)
+	mkdir -p bin
+	g++ -std=c++11 -w -g -o $@ $^
 
 clean:
-	rm -f bin/*
-	rm -f obj/*
-	rm -f $(FBDST)/*
+	rm -rf obj/**/
+	rm -f bin/* obj/* debug/*
+	rm -f $(LEXER) $(PARSER) $(TOKENS) $(OUTPUT)
